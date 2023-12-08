@@ -1,56 +1,24 @@
-import React from 'react';
-import type {PropsWithChildren} from 'react';
+import React, { useEffect } from 'react';
 import {
   SafeAreaView,
   ScrollView,
   StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
   View,
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-import {styles} from './src/theme/index';
-import { SectionComponent } from './src/components/CustomSection';
-
-
+import {CierreDia} from './src/screens/CierreDia';
 
 function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
+  // useEffect(() => {
+  //   // Configurar notificaciones al montar el componente
+  //   configureNotifications();
+  // }, []);
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <SectionComponent title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </SectionComponent>
-          <SectionComponent title="See Your Changes">
-            <ReloadInstructions />
-          </SectionComponent>
-          <SectionComponent title="Debug">
-            <DebugInstructions />
-          </SectionComponent>
+    <SafeAreaView>
+      <StatusBar />
+      <ScrollView contentInsetAdjustmentBehavior="automatic">
+        <View>
+          <CierreDia />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -58,3 +26,7 @@ function App(): JSX.Element {
 }
 
 export default App;
+function configureNotifications() {
+  throw new Error('Function not implemented.');
+}
+
