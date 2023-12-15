@@ -1,4 +1,4 @@
-import React from 'react';
+/* import React from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
@@ -41,9 +41,9 @@ function App(): JSX.Element {
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
-          <SectionComponent title="Step One">
+          <SectionComponent title="Step One aaa">
             Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
+            screen and then come back to see your editshoho santiG AAAO .
           </SectionComponent>
           <SectionComponent title="See Your Changes">
             <ReloadInstructions />
@@ -58,3 +58,11 @@ function App(): JSX.Element {
 }
 
 export default App;
+ */
+
+import HomeStack from './navigation/homeStack';
+export default function App() {
+  return (
+    <HomeStack/>
+  );
+}
