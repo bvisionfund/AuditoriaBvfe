@@ -10,7 +10,7 @@ import {
   View,
 } from 'react-native';
 
-function Login(): JSX.Element {
+function Home(): JSX.Element {
     const isDarkMode = useColorScheme() === 'dark';
   
     return (
@@ -22,4 +22,4 @@ function Login(): JSX.Element {
     );
   }
   
-  export default Login;
+  export default Home;
