@@ -11,8 +11,9 @@ import {
 
 
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../navigation/homeStack';
-import appStyles from '../src/Styles/appStyles';
+import { RootStackParamList } from '../../navigation/homeStack';
+import appStyles from '../Styles/appStyles';
+
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Login'>;
 interface LoginProps {
@@ -32,11 +33,10 @@ function Login({ navigation }: LoginProps): JSX.Element {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
+    <SafeAreaView style={appStyles.container}>
+      <View style={appStyles.overlay}>
       <Image
-          source={require('../src/images/OIP.jpg')} style={appStyles.imagen} // Ajusta la ruta de la imagen
-          /* style={styles.logo} */
+          source={require('D:/users/sajala/Desktop/Attentd_2/AuditoriaBvfe/src/images/OIP.jpg')} style={appStyles.imagen_BF} // Ajusta la ruta de la imagen
         />
       </View>
       <View style={styles.content}>
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FF5900',
+    backgroundColor: '#FFFFFF',
   },
   content: {
     width: '80%',

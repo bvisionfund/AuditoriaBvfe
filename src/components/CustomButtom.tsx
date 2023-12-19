@@ -6,7 +6,8 @@ interface Props {
   texto: string;
   color?: string;
   ancho?: boolean;
-  accion: (numeroTexto: string) => void; 
+  accion: (numeroTexto: string) => void;
+  onPress?: () => void 
 }
 export const BotonCalc = ({texto, color = '#2D2D2D', ancho = false, accion}: Props) => {
   return (

@@ -1,12 +1,12 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
-import Login from '../screens/Login';
-import Home from '../screens/Home';
-import Load_Excel from '../screens/Load_Excel'
+import Login from '../src/screens/Login';
+import Home from '../src/screens/Home';
+import Load_Excel from '../src/screens/Load_Excel'
 //import Load_Excel from '../screens/Load_Excel';
 
-// Define los tipos de tus rutas
+// Types of routes
 export type RootStackParamList = {
   Login: undefined;
   Home: undefined;
