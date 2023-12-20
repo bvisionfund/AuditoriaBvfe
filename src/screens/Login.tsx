@@ -34,7 +34,7 @@ function Login({ navigation }: LoginProps): JSX.Element {
 
   return (
     <SafeAreaView style={appStyles.container}>
-      <View style={appStyles.overlay}>
+      <View>
       <Image
           source={require('D:/users/sajala/Desktop/Attentd_2/AuditoriaBvfe/src/images/OIP.jpg')} style={appStyles.imagen_BF} // Ajusta la ruta de la imagen
         />
