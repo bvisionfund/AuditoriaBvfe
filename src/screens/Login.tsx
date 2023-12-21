@@ -25,7 +25,7 @@ function Login({ navigation }: LoginProps): JSX.Element {
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    // Agrega tu lógica de inicio de sesión aquí
+    // Lógica de inicio de sesión aqui
     console.log('Login button pressed');
 
     // Navega a la pantalla Home
@@ -33,70 +33,42 @@ function Login({ navigation }: LoginProps): JSX.Element {
   };
 
   return (
-    <SafeAreaView style={appStyles.container}>
+    <SafeAreaView style={appStyles.container_safearea}>
       <View>
       <Image
-          source={require('D:/users/sajala/Desktop/Attentd_2/AuditoriaBvfe/src/images/OIP.jpg')} style={appStyles.imagen_BF} // Ajusta la ruta de la imagen
+          source={require('D:/users/sajala/Desktop/Attentd_2/AuditoriaBvfe/src/images/OIP.jpg')} style={appStyles.imagen_BF}
         />
       </View>
-      <View style={styles.content}>
-        {/* <Text style={styles.title}>Login Screen</Text> */}
+      <View style={appStyles.content}>
+        <Text style={appStyles.title}>Auditoria BVFE APP</Text>
+        <Text style={appStyles.subtitle}>Optimiza tus tareas y agiliza tu día con nuestra aplicación.</Text>
 
         <TextInput
-          style={styles.input}
+          style={appStyles.input_user}
           placeholder="Username"
+          placeholderTextColor="#FFFFFF"
           value={username}
           onChangeText={(text) => setUsername(text)}
         />
 
         <TextInput
-          style={styles.input}
+          style={appStyles.input_pass}
           placeholder="Password"
+          placeholderTextColor="#FFFFFF"
           secureTextEntry
           value={password}
           onChangeText={(text) => setPassword(text)}
         />
 
         <TouchableOpacity style={appStyles.loginButton} onPress={handleLogin}>
-          <Text style={styles.buttonText}>Login</Text>
+          <Text style={appStyles.buttonText}>Ingresar</Text>
         </TouchableOpacity>
+
+        <Text style={appStyles.txt_forgot} > Olvidaste tu 
+        <Text style={appStyles.txt_forgot_two}> usuario </Text>o<Text style={appStyles.txt_forgot_two}> contraseña </Text>?</Text>
       </View>
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-  },
-  content: {
-    width: '80%',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginBottom: 20,
-    paddingLeft: 10,
-  },
-  loginButton: {
-    backgroundColor: 'blue',
-    padding: 10,
-    borderRadius: 5,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
-});
 
 export default Login;

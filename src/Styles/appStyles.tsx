@@ -5,6 +5,7 @@ export const Colors = {
   text: '#333333',
   second_background: '#F6D8B2'       
 };
+// Type of word
 export const Fonts = {
   fontFamily: 'Mulish',
 };
@@ -14,6 +15,12 @@ export const Gradient_Colors = ['#FF5900', '#EEAA86'];
 
 
 const appStyles = StyleSheet.create({
+  container_safearea:{
+    flex:1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: Colors.background
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -31,14 +38,14 @@ const appStyles = StyleSheet.create({
     alignItems: 'flex-start',
     marginTop: 40,
     marginBottom: 0,
-    padding: 20,
+    padding: 30,
   },
   logo: {
     width: 100,
     height: 100,
     marginBottom: 20,
   },
-  //Styles to text
+  //********************** Styles to text **********************
   title: {
     color: '#FFFFFF',
     fontFamily: 'Mulish',
@@ -59,27 +66,62 @@ const appStyles = StyleSheet.create({
     fontSize: 15,
     textAlign: 'left',
   },
-  input: {
-    height: 40,
-    borderColor: 'gray',
+  //********************** Login Screen **********************
+  input_user: {
+    alignSelf:'center',
+    width: 260,
+    height: 54,
+    borderRadius:15,
+    borderColor: '#FFF6ED',
     borderWidth: 1,
-    marginBottom: 20,
+    marginTop:100,
+    paddingLeft: 10,
+  },
+  input_pass: {
+    alignSelf:'center',
+    width: 260,
+    height: 54,
+    borderRadius:15,
+    borderColor: '#FFF6ED',
+    borderWidth: 1,
+    marginTop:30,
     paddingLeft: 10,
   },
   loginButton: {
+    marginTop: 50,
+    marginBottom: 50,
+    alignSelf:'center',
+    width:239,
+    height: 45,
     backgroundColor: '#FF8537',
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 15,
     alignItems: 'center',
   },
-    // Styles of Text in Bottons
+  txt_forgot:{
+    fontFamily: Fonts.fontFamily,
+    color: '#FFFFFF',
+    fontSize: 16,
+    alignSelf: 'center',
+  },
+  txt_forgot_two:{
+    fontFamily: Fonts.fontFamily,
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontStyle: 'italic',
+  },
+  
+  // ********************** Styles of Text in Bottons **********************
   buttonText: {
     color: '#FFFFFF',
     fontFamily: 'Mulish',
     fontSize: 17,
     fontWeight: 'bold',
   },
-  //Image Logo
+  container_Gradient: {
+    flex: 1,
+  },
+  // ********************** Image Logo **********************
   imagen_BF: {
     left: 0,
     top: 50,
@@ -87,7 +129,7 @@ const appStyles = StyleSheet.create({
     height: 68,
     alignSelf: 'center', 
   },
-  //Load_Excel Screen
+  //********************** Load_Excel Screen **********************
   rectangle_load:{
     marginBottom: 20,
     marginTop: 20,
@@ -175,7 +217,7 @@ const appStyles = StyleSheet.create({
     fontWeight: 'bold',
     alignSelf:"center"
   },
-  //****** Modal ******/
+  //********************** Modal **********************/
   icon_chechk: {
     marginTop: 0,
     marginBottom:20,
@@ -190,15 +232,15 @@ const appStyles = StyleSheet.create({
   },
   modalContent: {
     backgroundColor: '#F6D8B2',
-    padding: 20,
+    padding: 19,
     alignItems: 'center',
     borderRadius: 10,
     width: '90%',
     height: '23%',
   },
   btn_container_modal:{
+    marginTop:20,
     backgroundColor: '#0EBF1F', 
-    //padding: 10,
     borderRadius: 5,
     width: 90,
     height: 30,
@@ -214,6 +256,12 @@ const appStyles = StyleSheet.create({
   txt_modal:{
     fontFamily: Fonts.fontFamily,
     fontSize: 13,
+  },
+  txt_modal_two:{
+    fontFamily: Fonts.fontFamily,
+    fontSize: 13,
+    fontWeight: 'bold',
+    color: '#FF5900' 
   }
 });
 
