@@ -236,21 +236,21 @@ const appStyles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 10,
     width: '90%',
-    height: '23%',
+    height: '25%',
   },
   btn_container_modal:{
     marginTop:20,
-    backgroundColor: '#0EBF1F', 
+    backgroundColor: '#FF5900', 
     borderRadius: 5,
-    width: 90,
-    height: 30,
+    width: 100,
+    height: 40,
     margin: 10,
     alignItems: 'center',
     justifyContent: 'center',
   },
   text_btn_modal:{
     fontFamily: Fonts.fontFamily,
-    color: '#000000',
+    color: '#FFFFFF',
     fontSize: 14,
   },
   txt_modal:{
@@ -262,6 +262,12 @@ const appStyles = StyleSheet.create({
     fontSize: 13,
     fontWeight: 'bold',
     color: '#FF5900' 
+  },
+  imagen_gif :{
+    marginTop:20,
+    width:350,
+    height: 250,
+    marginBottom: 20
   }
 });
 
