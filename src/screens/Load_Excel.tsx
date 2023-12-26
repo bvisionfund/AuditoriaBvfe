@@ -12,49 +12,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import XLSX from 'xlsx';
 //import LottieView from 'lottie-react-native';
 import RNFS from 'react-native-fs';
-//************************ */
-import { Database } from '@nozbe/watermelondb';
-import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite';
-import { mySchema } from '../model/schema';
-import Post from '../model/PersonModel';
 // ****************************** Data Base******************
-const adapter=new SQLiteAdapter({
-  schema:mySchema,
-  
-
-  onSetUpError(error) {
-    // Database failed to load -- offer the user to reload the app or log out
-    console.log("db error", error);
-  },
-  dbName:"my db",
-  jsi: Platform.OS==="ios",
-});
-
-const database = new Database ({
-  adapter,
-  modelClasses: [Post],
-});
-
-// Create 
-const onCreate = async () =>{
-  await database.write(async () =>{
-    const newPost = await database.get('persons').create(post=>{
-      post.Name="Santiago";
-      post.Last_name="Ajla";
-      post.Age=22;
-    });
-    console.log(newPost);
-  });
-};
-
-//Read
-const onRead=async()=>{
-  const allPosts=await database.get('persons').query().fetch();
-  console.log(allPosts);
-  allPosts.map(post=>{
-    console.log(post.Name);
-  });
-};
+import { onRead, onCreate, deleteAllRecords } from '../database';
 
 const UploadScreen = () => {
   const [selectedFile, setSelectedFile] = useState<null | DocumentPickerResponse>(null);
@@ -101,8 +60,13 @@ const UploadScreen = () => {
         const firstSheet = workbook.Sheets[firstSheetName];
 
         // Data from rows
-        console.log('Datos de Celdas:', XLSX.utils.sheet_to_json(firstSheet));
-        
+        const rows = XLSX.utils.sheet_to_json(firstSheet) as { Nombre: string; Apellido: string; Edad: number }[];
+        console.log('Data from rows:',rows);
+
+        // Iterate over each row and save it to the database
+        rows.forEach(async (row) => {
+          await onCreate(row.Nombre, row.Apellido, row.Edad);
+        });
         setExcelData(fileContent);
       }
     } catch (err) {
@@ -135,8 +99,30 @@ const UploadScreen = () => {
         </View>
 
         <View>
-          <Image source={require('../images/Lottie_file.jpg')} style={appStyles.imagen_gif} />
         </View>
+        {/* ************ Botón para llamar a onCreate ****************** */}
+        <TouchableOpacity
+        style={appStyles.btn_container_modal}
+        onPress={() => onCreate('Ricardo', 'Paez', 17)}
+      >
+        <Text style={appStyles.buttonText}>OnCreate</Text>
+      </TouchableOpacity>
+
+      {/* ************ Botón para llamar a onRead ****************** */}
+      <TouchableOpacity
+        style={appStyles.btn_container_modal}
+        onPress={onRead}
+      >
+        <Text style={appStyles.buttonText}>OnRead</Text>
+      </TouchableOpacity>
+
+      {/* ************ Botón para llamar a deleteAllRecords ****************** */}
+      <TouchableOpacity
+        style={appStyles.btn_container_modal}
+        onPress={deleteAllRecords}
+      >
+        <Text style={appStyles.buttonText}>deleteAllRecords</Text>
+      </TouchableOpacity>
 
           {/* ************ Modal ****************** */}
           <Modal
@@ -156,21 +142,6 @@ const UploadScreen = () => {
                   onPress={() => setModalVisible(false)}
                 >
                   <Text style={appStyles.buttonText}>Aceptar</Text> 
-                </TouchableOpacity>
-                {/* ************ Botón para llamar a onCreate ****************** */}
-                <TouchableOpacity
-                  style={appStyles.btn_container_modal}
-                  onPress={onCreate}
-                >
-                  <Text style={appStyles.buttonText}>OnCreate</Text>
-                </TouchableOpacity>
-
-                {/* ************ Botón para llamar a onRead ****************** */}
-                <TouchableOpacity
-                  style={appStyles.btn_container_modal}
-                  onPress={onRead}
-                >
-                  <Text style={appStyles.buttonText}>OnRead</Text>
                 </TouchableOpacity>
               </View>
             </View>

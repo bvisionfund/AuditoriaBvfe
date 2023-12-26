@@ -1,10 +1,11 @@
 // PersonModel.ts
-import { Model} from '@nozbe/watermelondb';
-import {field, text} from '@nozbe/watermelondb/decorators';
+import {Model} from '@nozbe/watermelondb';
+import {field, text, readonly} from '@nozbe/watermelondb/decorators';
 
-export default class Post extends Model {
-  static table ='persons';
-  @text('Name') Name: any;
-  @text('Last_name') Last_name: any;
-  @text('Age') Age: any;
+export default class PersonModel extends Model {
+  static table = 'persons';
+
+  @field('Name') Name?: string;
+  @field('Last_name') Last_name?: string;
+  @field('Age') Age?: number;
 }
