@@ -36,7 +36,7 @@ function Login({ navigation }: LoginProps): JSX.Element {
     <SafeAreaView style={appStyles.container_safearea}>
       <View>
       <Image
-          source={require('D:/users/sajala/Desktop/Attentd_2/AuditoriaBvfe/src/images/OIP.jpg')} style={appStyles.imagen_BF}
+          source={require('../images/OIP.jpg')} style={appStyles.imagen_BF}
         />
       </View>
       <View style={appStyles.content}>

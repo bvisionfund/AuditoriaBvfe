@@ -1,22 +1,10 @@
 // PersonModel.ts
-/* import { Model, field, action } from '@nozbe/watermelondb';
-import { TableName } from '@nozbe/watermelondb/utils/commonTypes';
+import { Model} from '@nozbe/watermelondb';
+import {field, text} from '@nozbe/watermelondb/decorators';
 
-class PersonModel extends Model {
-  static table: TableName = 'Persons';
-
-  @field('Name') name!: string;
-  @field('Last_name') lastName!: string;
-  @field('Age') age!: number;
-
-  // Example action
-  @action async updatePerson(newData: { name?: string; lastName?: string; age?: number }) {
-    await this.update((record) => {
-      if (newData.name) record.name = newData.name;
-      if (newData.lastName) record.lastName = newData.lastName;
-      if (newData.age) record.age = newData.age;
-    });
-  }
+export default class Post extends Model {
+  static table ='persons';
+  @text('Name') Name: any;
+  @text('Last_name') Last_name: any;
+  @text('Age') Age: any;
 }
-
-export default PersonModel; */

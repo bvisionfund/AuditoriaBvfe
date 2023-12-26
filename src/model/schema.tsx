@@ -5,11 +5,11 @@ Together, those are called a database schema and we must define it first. */
 
 import { appSchema, tableSchema } from '@nozbe/watermelondb'
 
-export default appSchema({
+export const mySchema= appSchema({
   version: 1,
   tables: [
     tableSchema({
-        name: 'Persons',
+        name: 'persons',
         columns:[
             {name: 'Name', type: 'string'},
             {name: 'Last_name', type: 'string'},
