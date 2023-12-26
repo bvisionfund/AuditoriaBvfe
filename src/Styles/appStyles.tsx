@@ -268,6 +268,27 @@ const appStyles = StyleSheet.create({
     width:350,
     height: 250,
     marginBottom: 20
+  },
+  //*************** ActivityIndicator*************** */
+  activityIndicatorContainer:{
+    //marginBottom: 10,
+    //marginTop: 10,
+    width: 100,
+    height: 80,
+    borderColor: '#FF5900',
+    borderWidth: 2,
+    borderStyle: 'dashed',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 10,
+    backgroundColor: '#F6D8B2',
+    alignSelf: 'center'
+  },
+  uploadingText:{
+    fontFamily: Fonts.fontFamily,
+    fontSize: 13,
+    fontWeight: 'bold',
+    color: '#000000'
   }
 });
 

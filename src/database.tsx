@@ -24,7 +24,7 @@ const database = new Database({
 export const onCreate = async (name: string, lastName: string, age: number) => {
   await database.write(async () => {
     // Utiliza el método create para agregar un nuevo registro
-    await database.get('persons').create(newPerson => {
+    await database.get('persons').create((newPerson: InstanceType<typeof Post>)=> {
       newPerson.Name = name;
       newPerson.Last_name = lastName;
       newPerson.Age = age;
@@ -37,7 +37,7 @@ export const onCreate = async (name: string, lastName: string, age: number) => {
 export const onRead = async () => {
   const allPosts = await database.get('persons').query().fetch();
   console.log(allPosts);
-  allPosts.map(post => {
+  allPosts.map((post: InstanceType<typeof Post>) => {
     console.log(post.Name);
   });
 };

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image, Modal, Button, Platform } from 'react-native';
+import { ActivityIndicator, View, Text, TouchableOpacity, StyleSheet, Image, Modal, Button, Platform } from 'react-native';
 import DocumentPicker, { DocumentPickerResponse } from 'react-native-document-picker';
 import LinearGradient from 'react-native-linear-gradient';
 import appStyles, { Gradient_Colors } from '../Styles/appStyles';
@@ -16,35 +16,14 @@ import RNFS from 'react-native-fs';
 import { onRead, onCreate, deleteAllRecords } from '../database';
 
 const UploadScreen = () => {
-  const [selectedFile, setSelectedFile] = useState<null | DocumentPickerResponse>(null);
-  const [uploadProgress, setUploadProgress] = useState<number>(0); // Nuevo estado para el progreso de carga
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [excelData, setExcelData] = useState<string | null>(null);
-  const [data, setData] = useState<any[]>([]);
-  const [currentIndex, setCurrentIndex] = useState<number>(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      // Incrementa el progreso gradualmente cada segundo
-      setUploadProgress((prevProgress) => {
-        const newProgress = prevProgress + 0.01;
-        return newProgress >= 1 ? 1 : newProgress;
-      });
-    }, 10);
-
-    // Limpia el intervalo después de 1 minuto
-    setTimeout(() => {
-      clearInterval(interval);
-    }, 60000);
-
-    // Limpieza al desmontar el componente
-    return () => clearInterval(interval);
-  }, []);
+  const [uploading, setUploading] = useState<boolean>(false);
 
   const pickDocument = async () => {
     try {
       const result = await DocumentPicker.pick({
-        type: [DocumentPicker.types.allFiles],
+        type: [DocumentPicker.types.xlsx],
       });
 
       if (Array.isArray(result) && result.length > 0 && result[0].uri) {
@@ -68,6 +47,10 @@ const UploadScreen = () => {
           await onCreate(row.Nombre, row.Apellido, row.Edad);
         });
         setExcelData(fileContent);
+        //After store info in the DB, hidden de ActivityIndicator
+        setUploading(false);
+        //Modal Visible after store info in the DB
+        setModalVisible(true);
       }
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
@@ -91,14 +74,21 @@ const UploadScreen = () => {
         <View style={appStyles.content}>
         <Text style={appStyles.title}>Subir Excel</Text>
         {/* ************ Select filet to load container ************* */}
-        <View style={appStyles.rectangle_load}>
+        <TouchableOpacity style={appStyles.rectangle_load} onPress={pickDocument}>
           <Image source={require('../images/Upload_icon.png')} style={appStyles.icon_load} />
-          <Text style={appStyles.browse_txt} onPress={pickDocument}>Examinar</Text>
-
+          <Text style={appStyles.browse_txt}>Examinar</Text>
           <Text style={appStyles.formats_txt}>Formatos compatibles: XLSX </Text>
-        </View>
-
+        </TouchableOpacity>
+        {/* ***************** Activity Indicator********************** */}
+      {uploading && (
+          <View style={appStyles.activityIndicatorContainer}>
+            <ActivityIndicator size="large" color="#00ff00" />
+            <Text style={appStyles.uploadingText}>Cargando...</Text>
+          </View>
+        )} 
+        {/* ***************** Lottie Section************************* */}
         <View>
+        {/* <Image source={require('../images/Lottie_file.jpg')} style={appStyles.imagen_gif} /> */}
         </View>
         {/* ************ Botón para llamar a onCreate ****************** */}
         <TouchableOpacity
@@ -123,7 +113,6 @@ const UploadScreen = () => {
       >
         <Text style={appStyles.buttonText}>deleteAllRecords</Text>
       </TouchableOpacity>
-
           {/* ************ Modal ****************** */}
           <Modal
             animationType="slide"
