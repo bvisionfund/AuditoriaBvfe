@@ -6,14 +6,16 @@ Together, those are called a database schema and we must define it first. */
 import { appSchema, tableSchema } from '@nozbe/watermelondb'
 
 export const mySchema= appSchema({
-  version: 1,
+  version: 3,
   tables: [
     tableSchema({
         name: 'persons',
         columns:[
             {name: 'Name', type: 'string'},
             {name: 'Last_name', type: 'string'},
-            {name: 'Age', type: 'number'}
+            {name: 'Age', type: 'number'},
+            {name: 'Cellphone', type: 'string'}, 
+            { name: 'PersonId', type: 'string' }, 
         ]
     })
   ]

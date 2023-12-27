@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import Login from '../src/screens/Login';
 import Home from '../src/screens/Home';
 import Load_Excel from '../src/screens/Load_Excel';
+import Search from '../src/screens/Search';
 //import Excel_proof from '../src/screens/Excel_proof';
 
 // Types of routes
@@ -12,6 +13,7 @@ export type RootStackParamList = {
   Home: undefined;
   Load_Excel: undefined;
   Excel_proof: undefined;
+  Search:undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -31,6 +33,10 @@ function HomeStack() {
         <Stack.Screen
           name="Load_Excel"
           component={Load_Excel}
+        />
+        <Stack.Screen
+          name="Search"
+          component={Search}
         />
       </Stack.Navigator>
     </NavigationContainer>

@@ -10,8 +10,32 @@ lose all their data.
 
 import { schemaMigrations } from '@nozbe/watermelondb/Schema/migrations'
 
+// migrations.tsx
+import { addColumns } from '@nozbe/watermelondb/Schema/migrations';
+
 export default schemaMigrations({
   migrations: [
-    // We'll add migration definitions here later
+    {
+      toVersion: 2,
+      steps: [
+        // Define steps for migration to version 2
+        addColumns({
+          table: 'persons',
+          columns: [
+            { name: 'Cellphone', type: 'string' },
+        ],
+          
+        }),
+      ],
+    },
+    {
+      toVersion: 3,
+      steps: [
+        addColumns({
+          table: 'persons',
+          columns: [{ name: 'PersonId', type: 'string' }],
+        }),
+      ],
+    },
   ],
-})
+});

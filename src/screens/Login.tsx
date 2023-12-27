@@ -29,7 +29,7 @@ function Login({ navigation }: LoginProps): JSX.Element {
     console.log('Login button pressed');
 
     // Navega a la pantalla Home
-    navigation.navigate('Load_Excel');
+    navigation.navigate('Home');
   };
 
   return (

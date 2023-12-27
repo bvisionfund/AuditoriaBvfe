@@ -1,3 +1,4 @@
+import { both } from 'rambdax';
 import { StyleSheet } from 'react-native';
 //Variables to define the background and text color
 export const Colors = {
@@ -289,7 +290,84 @@ const appStyles = StyleSheet.create({
     fontSize: 13,
     fontWeight: 'bold',
     color: '#000000'
-  }
+  },
+  //*******************NavBar Style************* */
+  navbar_container:{
+    height:82,
+    width: 420,
+    backgroundColor: '#FFFFFF',
+    position: 'absolute',
+    bottom: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  // ******************* Home Screen **************
+  home_container:{
+    height:150,
+    width: 420,
+    //backgroundColor: '#FFFFFF',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    alignSelf: 'center'
+  },
+  container_icon:{
+    height:125,
+    width: 125,
+    backgroundColor: '#F6D8B2',
+    borderRadius: 5,
+    padding:20,
+    alignItems: 'center',
+    alignSelf: 'center'
+  },
+  text_icon:{
+    marginTop:5,
+    alignSelf: 'center',
+    fontFamily: Fonts.fontFamily,
+    fontWeight: 'bold',
+    color: '#000000',
+    fontSize: 25,
+  },
+  //**************** Search Screen *******************/
+  search_container: {
+  width: 410,
+  height: 150,
+  //backgroundColor: '#FFFFFF',
+  alignSelf: 'center',
+  alignItems: 'center',
+  flexDirection: 'column',
+  padding: 30,
+},
+inputContainer: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  
+},
+search_input: {
+  width: 250,
+  height: 60,
+  backgroundColor: Colors.second_background,
+},
+search_icon: {
+  backgroundColor: '#EEAA86',
+  width: 70,
+  height: 60,
+  padding: 5,
+  alignItems: 'center',
+  justifyContent: 'center',
+  borderTopRightRadius: 10,
+  borderBottomRightRadius: 10,
+},
+txt_search:{
+  color: '#000000',
+  fontFamily: 'Mulish',
+  fontWeight: 'bold',
+  fontSize: 15,
+  paddingBottom:10,
+  marginLeft: 15,
+  alignSelf: 'flex-start'
+}
 });
 
 export default appStyles;

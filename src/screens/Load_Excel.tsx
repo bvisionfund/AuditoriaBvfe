@@ -3,34 +3,42 @@ import { ActivityIndicator, View, Text, TouchableOpacity, StyleSheet, Image, Mod
 import DocumentPicker, { DocumentPickerResponse } from 'react-native-document-picker';
 import LinearGradient from 'react-native-linear-gradient';
 import appStyles, { Gradient_Colors } from '../Styles/appStyles';
-import { BotonCalc } from '../components/CustomButtom';
-//import Icon from 'react-native-vector-icons/FontAwesome';
-//*import { Icon } from '@iconify/react';
-//import { IonIcon } from '@ionic/react';
-//import ProgressBar from 'react-native-progress/Bar';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faHome, faUpload, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import XLSX from 'xlsx';
-//import LottieView from 'lottie-react-native';
 import RNFS from 'react-native-fs';
 // ****************************** Data Base******************
 import { onRead, onCreate, deleteAllRecords } from '../database';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../navigation/homeStack';
 
-const UploadScreen = () => {
+// ************************** Navigation Bar********************
+
+type LoginScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Load_Excel'>;
+interface LoginProps {
+  navigation: LoginScreenNavigationProp;
+}
+
+const UploadScreen: React.FC<LoginProps> = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [excelData, setExcelData] = useState<string | null>(null);
   const [uploading, setUploading] = useState<boolean>(false);
-
+  const [fileName, setFileName] = useState<string>(''); 
+  //**************** Select Excel File********************
   const pickDocument = async () => {
     try {
       const result = await DocumentPicker.pick({
         type: [DocumentPicker.types.xlsx],
       });
-
       if (Array.isArray(result) && result.length > 0 && result[0].uri) {
         const path = result[0].uri;
+        //  Name of document
+        const currentFileName = result[0].name ?? '';
+        console.log('El nombre del archiv es: ',currentFileName);
+
         const fileContent = await RNFS.readFile(path, 'base64');
         const workbook = XLSX.read(fileContent, { type: 'base64' });
-
         // Print Sheet Names
         console.log('Nombres de las Hojas:', workbook.SheetNames);
 
@@ -39,13 +47,15 @@ const UploadScreen = () => {
         const firstSheet = workbook.Sheets[firstSheetName];
 
         // Data from rows
-        const rows = XLSX.utils.sheet_to_json(firstSheet) as { Nombre: string; Apellido: string; Edad: number }[];
+        const rows = XLSX.utils.sheet_to_json(firstSheet) as { Nombre: string; Apellido: string; Edad: number,Celular: string,Cedula: string }[];
         console.log('Data from rows:',rows);
 
         // Iterate over each row and save it to the database
         rows.forEach(async (row) => {
-          await onCreate(row.Nombre, row.Apellido, row.Edad);
+          await onCreate(row.Nombre, row.Apellido, row.Edad, row.Celular, row.Cedula);
         });
+        //Set the file name
+        setFileName(currentFileName);
         setExcelData(fileContent);
         //After store info in the DB, hidden de ActivityIndicator
         setUploading(false);
@@ -72,28 +82,28 @@ const UploadScreen = () => {
           <Image source={require('../images/OIP.jpg')} style={appStyles.imagen_BF} />
         </View>
         <View style={appStyles.content}>
-        <Text style={appStyles.title}>Subir Excel</Text>
-        {/* ************ Select filet to load container ************* */}
-        <TouchableOpacity style={appStyles.rectangle_load} onPress={pickDocument}>
-          <Image source={require('../images/Upload_icon.png')} style={appStyles.icon_load} />
-          <Text style={appStyles.browse_txt}>Examinar</Text>
-          <Text style={appStyles.formats_txt}>Formatos compatibles: XLSX </Text>
-        </TouchableOpacity>
-        {/* ***************** Activity Indicator********************** */}
-      {uploading && (
-          <View style={appStyles.activityIndicatorContainer}>
-            <ActivityIndicator size="large" color="#00ff00" />
-            <Text style={appStyles.uploadingText}>Cargando...</Text>
+          <Text style={appStyles.title}>Subir Excel</Text>
+          {/* ************ Select filet to load container ************* */}
+          <TouchableOpacity style={appStyles.rectangle_load} onPress={pickDocument}>
+            <Image source={require('../images/Upload_icon.png')} style={appStyles.icon_load} />
+            <Text style={appStyles.browse_txt}>Examinar</Text>
+            <Text style={appStyles.formats_txt}>Formatos compatibles: XLSX </Text>
+          </TouchableOpacity>
+          {/* ***************** Activity Indicator********************** */}
+          {uploading && (
+            <View style={appStyles.activityIndicatorContainer}>
+              <ActivityIndicator size="large" color="#00ff00" />
+              <Text style={appStyles.uploadingText}>Cargando...</Text>
+            </View>
+          )} 
+          {/* ***************** Lottie Section************************* */}
+          <View>
+          {/* <Image source={require('../images/Lottie_file.jpg')} style={appStyles.imagen_gif} /> */}
           </View>
-        )} 
-        {/* ***************** Lottie Section************************* */}
-        <View>
-        {/* <Image source={require('../images/Lottie_file.jpg')} style={appStyles.imagen_gif} /> */}
-        </View>
-        {/* ************ Botón para llamar a onCreate ****************** */}
+          {/* ************ Botón para llamar a onCreate ****************** */}
         <TouchableOpacity
         style={appStyles.btn_container_modal}
-        onPress={() => onCreate('Ricardo', 'Paez', 17)}
+        onPress={() => onCreate('Ricardo', 'Paez', 17,'0123456789','1003818497')}
       >
         <Text style={appStyles.buttonText}>OnCreate</Text>
       </TouchableOpacity>
@@ -118,23 +128,33 @@ const UploadScreen = () => {
             animationType="slide"
             transparent={true}
             visible={modalVisible}
-            onRequestClose={() => setModalVisible(false)}
-          >
+            onRequestClose={() => setModalVisible(false)}>
             <View style={appStyles.modalContainer}>
               <View style={appStyles.modalContent}>
                 <Image source={require('../images/circle_check.png')} style={appStyles.icon_chechk}></Image>
                 <Text style={appStyles.txt_modal}>El archivo 
-                <Text style={appStyles.txt_modal_two}> nombre_archivo.XSLX </Text> 
+                <Text style={appStyles.txt_modal_two}> {fileName} </Text> 
                 se cargo correctamente.</Text>
                 <TouchableOpacity 
                   style={appStyles.btn_container_modal}
-                  onPress={() => setModalVisible(false)}
-                >
+                  onPress={() => setModalVisible(false)}>
                   <Text style={appStyles.buttonText}>Aceptar</Text> 
                 </TouchableOpacity>
               </View>
             </View>
           </Modal>
+          {/* ********************** Navbar ***************** */}
+          <View style={appStyles.navbar_container}>
+            <TouchableOpacity onPress={() => navigation.navigate('Load_Excel')}>
+              <FontAwesomeIcon icon={faUpload} size={40} color="#000000" />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+              <FontAwesomeIcon icon={faHome} size={40} color="#696969" />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('Search')}>
+              <FontAwesomeIcon icon={faMagnifyingGlass} size={40} color="#696969" />
+            </TouchableOpacity>
+          </View>
         </View>
       </LinearGradient>
     </SafeAreaView>

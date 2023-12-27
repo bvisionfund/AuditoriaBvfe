@@ -8,4 +8,6 @@ export default class PersonModel extends Model {
   @field('Name') Name?: string;
   @field('Last_name') Last_name?: string;
   @field('Age') Age?: number;
+  @field('Cellphone') Cellphone?: string;
+  @field('PersonId') PersonId?: string;
 }
