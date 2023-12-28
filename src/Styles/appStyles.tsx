@@ -1,3 +1,4 @@
+import { Center } from 'native-base';
 import { both } from 'rambdax';
 import { StyleSheet } from 'react-native';
 //Variables to define the background and text color
@@ -367,6 +368,56 @@ txt_search:{
   paddingBottom:10,
   marginLeft: 15,
   alignSelf: 'flex-start'
+},
+//************************** List of members ************************** 
+users_container:{
+  width: 346,
+  height: 100,
+  flex:1,
+  borderColor: '#FF5900',
+  borderWidth: 2,
+},
+listItem:{
+  width: 325,
+  height: 90,
+  backgroundColor: Colors.second_background,
+  borderRadius: 10,
+  marginBottom: 10,
+  alignItems:'center',
+  alignSelf: 'center',
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  paddingHorizontal: 15,
+},
+style_circle:{
+  width: 20,
+  height: 20,
+  borderRadius: 15, 
+  backgroundColor: '#FFFFFF',
+  justifyContent: 'center',
+  alignItems: 'flex-end',
+},
+icon_user:{
+  alignSelf:'center',
+  width: 60,
+  height: 60,
+  borderRadius: 30, 
+  backgroundColor: '#FF8543', 
+  justifyContent: 'center',
+  alignItems: 'center'
+
+},
+info_user:{
+  flex: 1,
+  alignSelf:'center',
+  paddingLeft:20
+},
+txt_info_user:{
+  color: '#000000',
+  fontFamily: Fonts.fontFamily,
+  fontWeight: 'bold',
+  fontSize: 15,
+  marginBottom:4
 }
 });
 
