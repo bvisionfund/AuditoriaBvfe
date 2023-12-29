@@ -9,7 +9,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import XLSX from 'xlsx';
 import RNFS from 'react-native-fs';
 // ****************************** Data Base******************
-import { onRead, onCreate, deleteAllRecords } from '../database';
+import { onRead, onCreate, deleteAllRecords } from '../Auditoria_Data_Base';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/homeStack';
 
@@ -43,17 +43,40 @@ const UploadScreen: React.FC<LoginProps> = ({ navigation }) => {
         console.log('Nombres de las Hojas:', workbook.SheetNames);
 
         // Get data from first sheet
-        const firstSheetName = workbook.SheetNames[0];
+        const firstSheetName = workbook.SheetNames[1];
         const firstSheet = workbook.Sheets[firstSheetName];
-
+        // Specify the columns to extract
+        const columnsToExtract = ['NOMBRES','IDENTIFICACION', 'MONTO OTORGADO', 'TASA', 'ACTIVIDAD CLIENTE'];
+        // Find the headerRow
+        const headerRow: string[] = (XLSX.utils.sheet_to_json(firstSheet, { header: 1 }) as string[][])[0];
+        // Find the index of column to extract
+        const columnIndexes = columnsToExtract.map(column => headerRow.indexOf(column));
         // Data from rows
-        const rows = XLSX.utils.sheet_to_json(firstSheet) as { Nombre: string; Apellido: string; Edad: number,Celular: string,Cedula: string }[];
-        console.log('Data from rows:',rows);
-
-        // Iterate over each row and save it to the database
-        rows.forEach(async (row) => {
-          await onCreate(row.Nombre, row.Apellido, row.Edad, row.Celular, row.Cedula);
+        const rows = XLSX.utils.sheet_to_json(firstSheet);
+        // Iterate over all rows and find the columns 
+        const selectedRows: Record<string, any>[] = (rows as Record<string, any>[]).map((row: Record<string, any>) => {
+          const selectedRow: Record<string, any> = {};
+          columnIndexes.forEach(index => {
+            const columnName = headerRow[index];
+            selectedRow[columnName] = row[columnName];
+          });
+          return selectedRow;
         });
+        console.log('Data from selected rows:', selectedRows);
+        //****************Save the data in USER_R_C****** */
+        //*****************Option 1******************** */
+        const Rows_selected=selectedRows as { 'ACTIVIDAD CLIENTE': string; IDENTIFICACION: string; 'MONTO OTORGADO': number; NOMBRES: string; TASA: number}[];
+        // Iterate over each row and save it to the database
+         Rows_selected.forEach(async (row) => {
+          await onCreate(row.NOMBRES, row.IDENTIFICACION, row['MONTO OTORGADO'], row.TASA, row['ACTIVIDAD CLIENTE']);
+        });
+        //*****************Option 2******************** */
+        // Save the data in the DB
+        /* selectedRows.forEach(async (selectedRow) => {
+          const { NOMBRES, IDENTIFICACION, 'MONTO OTORGADO': monto, TASA, 'ACTIVIDAD CLIENTE': actividad_economica } = selectedRow;
+          // Save in data base using OnCreate function
+          await onCreate(NOMBRES, IDENTIFICACION, Number(monto), Number(TASA), actividad_economica);
+        }); */
         //Set the file name
         setFileName(currentFileName);
         setExcelData(fileContent);
@@ -103,7 +126,7 @@ const UploadScreen: React.FC<LoginProps> = ({ navigation }) => {
           {/* ************ Botón para llamar a onCreate ****************** */}
         <TouchableOpacity
         style={appStyles.btn_container_modal}
-        onPress={() => onCreate('Ricardo', 'Paez', 17,'0123456789','1003818497')}
+        onPress={() => onCreate('Saire David Conejo Paez','1050447879',100.25,22.56,'Cultivo de tomates de mandarina')}
       >
         <Text style={appStyles.buttonText}>OnCreate</Text>
       </TouchableOpacity>
