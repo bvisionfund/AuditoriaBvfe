@@ -9,7 +9,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import XLSX from 'xlsx';
 import RNFS from 'react-native-fs';
 // ****************************** Data Base******************
-import { onRead, onCreate, deleteAllRecords } from '../Auditoria_Data_Base';
+import { onRead, onCreate, deleteAllRecords,onRead_User_SAD,onCreate_User_SAD,deleteAllRecords_User_SAD,
+  onCreate_USER_PPI,onRead_User_PPI,deleteAllRecords_User_PPI } from '../Auditoria_Data_Base';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/homeStack';
 
@@ -46,7 +47,18 @@ const UploadScreen: React.FC<LoginProps> = ({ navigation }) => {
         const firstSheetName = workbook.SheetNames[1];
         const firstSheet = workbook.Sheets[firstSheetName];
         // Specify the columns to extract
-        const columnsToExtract = ['NOMBRES','IDENTIFICACION', 'MONTO OTORGADO', 'TASA', 'ACTIVIDAD CLIENTE'];
+        //const columnsToExtract = ['NOMBRES','IDENTIFICACION', 'MONTO OTORGADO', 'TASA', 'ACTIVIDAD CLIENTE'];
+        //const columnsToExtract = ['NÚMERO_DE_IDENTIFICACIÓN','NOMBRES_CLIENTE', 'APELLIDOS_CLIENTE', 'TELÉFONOS'];        
+        const columnsToExtract = ['IDENTIFICACION','NOMBREUNIDO', '01. ¿CUÁNTOS MIEMBROS TIENE EL HOGAR?',
+        '02. ¿CUÁNTOS MIEMBROS DEL HOGAR MAYORES DE 11 AÑOS TIENEN TELÉFONO CELULAR ACTIVADO?',
+        '03. ¿TIENE EL HOGAR UN CARRO (PARA USO EXCLUSIVO DEL HOGAR), AIRE ACONDICIONADO, CÁMARA DE VIDEO, O MÁQUINA GRANDE PARA EJERCITARSE?',
+        '04. ¿EL MATERIAL PREDOMINANTE DEL PISO DE LA VIVIENDA ES DE...?',
+        '05. ¿DISPONE ESTE HOGAR DE ESPACIO PARA BAÑARSE O DUCHARSE CON INSTALACIONES?',
+        '06. ¿ESTÁ UBICADO EL SERVICIO HIGIÉNICO DENTRO DE LA VIVIENDA?',
+        '07. ¿TIENE EL HOGAR UNA LICUADORA, WAFLERA (SANDUCHERA), O BATIDORA?',
+        '08. ¿TIENE EL HOGAR UNA PLANCHA?',
+        '09. ¿CUÁNTOS TELEVISORES A COLOR O TELEVISORES PLASMA/LCD/LED TIENE EL HOGAR?',
+        '10. ¿CUÁNTOS FOCOS UTILIZA EN EL HOGAR?'];        
         // Find the headerRow
         const headerRow: string[] = (XLSX.utils.sheet_to_json(firstSheet, { header: 1 }) as string[][])[0];
         // Find the index of column to extract
@@ -65,11 +77,44 @@ const UploadScreen: React.FC<LoginProps> = ({ navigation }) => {
         console.log('Data from selected rows:', selectedRows);
         //****************Save the data in USER_R_C****** */
         //*****************Option 1******************** */
-        const Rows_selected=selectedRows as { 'ACTIVIDAD CLIENTE': string; IDENTIFICACION: string; 'MONTO OTORGADO': number; NOMBRES: string; TASA: number}[];
+        //const Rows_selected=selectedRows as { 'ACTIVIDAD CLIENTE': string; IDENTIFICACION: string; 'MONTO OTORGADO': number; NOMBRES: string; TASA: number}[];
         // Iterate over each row and save it to the database
-         Rows_selected.forEach(async (row) => {
-          await onCreate(row.NOMBRES, row.IDENTIFICACION, row['MONTO OTORGADO'], row.TASA, row['ACTIVIDAD CLIENTE']);
+        //Rows_selected.forEach(async (row) => {
+        //  await onCreate(row.NOMBRES, row.IDENTIFICACION, row['MONTO OTORGADO'], row.TASA, row['ACTIVIDAD CLIENTE']);
+        //});
+        //*****************Option 1******************** */
+        //const Rows_selected=selectedRows as { 'NÚMERO_DE_IDENTIFICACIÓN': string; 'NOMBRES_CLIENTE': string; 'APELLIDOS_CLIENTE': string; 'TELÉFONOS': string}[];
+        // Iterate over each row and save it to the database
+        //Rows_selected.forEach(async (row) => {
+        //  await onCreate_User_SAD(row['NÚMERO_DE_IDENTIFICACIÓN'], row['NOMBRES_CLIENTE'], row['APELLIDOS_CLIENTE'], row['TELÉFONOS']);
+        //});
+        //*****************Option 1******************** */
+        const Rows_selected=selectedRows as { 'IDENTIFICACION': string; 'NOMBREUNIDO': string;
+        '01. ¿CUÁNTOS MIEMBROS TIENE EL HOGAR?': string;
+        '02. ¿CUÁNTOS MIEMBROS DEL HOGAR MAYORES DE 11 AÑOS TIENEN TELÉFONO CELULAR ACTIVADO?': string;
+        '03. ¿TIENE EL HOGAR UN CARRO (PARA USO EXCLUSIVO DEL HOGAR), AIRE ACONDICIONADO, CÁMARA DE VIDEO, O MÁQUINA GRANDE PARA EJERCITARSE?': string;
+        '04. ¿EL MATERIAL PREDOMINANTE DEL PISO DE LA VIVIENDA ES DE...?': string;
+        '05. ¿DISPONE ESTE HOGAR DE ESPACIO PARA BAÑARSE O DUCHARSE CON INSTALACIONES?': string;
+        '06. ¿ESTÁ UBICADO EL SERVICIO HIGIÉNICO DENTRO DE LA VIVIENDA?': string;
+        '07. ¿TIENE EL HOGAR UNA LICUADORA, WAFLERA (SANDUCHERA), O BATIDORA?': string;
+        '08. ¿TIENE EL HOGAR UNA PLANCHA?': string;
+        '09. ¿CUÁNTOS TELEVISORES A COLOR O TELEVISORES PLASMA/LCD/LED TIENE EL HOGAR?': string;
+        '10. ¿CUÁNTOS FOCOS UTILIZA EN EL HOGAR?': string;}[];
+        // Iterate over each row and save it to the database
+        Rows_selected.forEach(async (row) => {
+          await onCreate_USER_PPI(row['IDENTIFICACION'], row['NOMBREUNIDO'],
+          row['01. ¿CUÁNTOS MIEMBROS TIENE EL HOGAR?'],
+          row['02. ¿CUÁNTOS MIEMBROS DEL HOGAR MAYORES DE 11 AÑOS TIENEN TELÉFONO CELULAR ACTIVADO?'],
+          row['03. ¿TIENE EL HOGAR UN CARRO (PARA USO EXCLUSIVO DEL HOGAR), AIRE ACONDICIONADO, CÁMARA DE VIDEO, O MÁQUINA GRANDE PARA EJERCITARSE?'],
+          row['04. ¿EL MATERIAL PREDOMINANTE DEL PISO DE LA VIVIENDA ES DE...?'],
+          row['05. ¿DISPONE ESTE HOGAR DE ESPACIO PARA BAÑARSE O DUCHARSE CON INSTALACIONES?'],
+          row['06. ¿ESTÁ UBICADO EL SERVICIO HIGIÉNICO DENTRO DE LA VIVIENDA?'],
+          row['07. ¿TIENE EL HOGAR UNA LICUADORA, WAFLERA (SANDUCHERA), O BATIDORA?'],
+          row['08. ¿TIENE EL HOGAR UNA PLANCHA?'],
+          row['09. ¿CUÁNTOS TELEVISORES A COLOR O TELEVISORES PLASMA/LCD/LED TIENE EL HOGAR?'],
+          row['10. ¿CUÁNTOS FOCOS UTILIZA EN EL HOGAR?']);
         });
+        
         //*****************Option 2******************** */
         // Save the data in the DB
         /* selectedRows.forEach(async (selectedRow) => {
@@ -126,9 +171,9 @@ const UploadScreen: React.FC<LoginProps> = ({ navigation }) => {
           {/* ************ Botón para llamar a onCreate ****************** */}
         <TouchableOpacity
         style={appStyles.btn_container_modal}
-        onPress={() => onCreate('Saire David Conejo Paez','1050447879',100.25,22.56,'Cultivo de tomates de mandarina')}
+        onPress={() => onCreate_User_SAD('1050447879','Saire David','Conejo Paez','0999969036')}
       >
-        <Text style={appStyles.buttonText}>OnCreate</Text>
+        <Text style={appStyles.buttonText}>Crear</Text>
       </TouchableOpacity>
 
       {/* ************ Botón para llamar a onRead ****************** */}
@@ -136,7 +181,7 @@ const UploadScreen: React.FC<LoginProps> = ({ navigation }) => {
         style={appStyles.btn_container_modal}
         onPress={onRead}
       >
-        <Text style={appStyles.buttonText}>OnRead</Text>
+        <Text style={appStyles.buttonText}>Leer</Text>
       </TouchableOpacity>
 
       {/* ************ Botón para llamar a deleteAllRecords ****************** */}
@@ -144,7 +189,7 @@ const UploadScreen: React.FC<LoginProps> = ({ navigation }) => {
         style={appStyles.btn_container_modal}
         onPress={deleteAllRecords}
       >
-        <Text style={appStyles.buttonText}>deleteAllRecords</Text>
+        <Text style={appStyles.buttonText}>Eliminar</Text>
       </TouchableOpacity>
           {/* ************ Modal ****************** */}
           <Modal

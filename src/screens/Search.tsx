@@ -23,7 +23,7 @@ const Search:  React.FC<LoginProps> = ({ navigation }) => {
         "name": "Santiago Ajala",
         "id": "1003818497",
         "phone": "0999969036",
-        "status": "no active",
+        "status": "active",
         "sex": "M"
     },
     {
@@ -103,20 +103,32 @@ interface ListItem {
 }
 const renderItem = ({ item }: { item: ListItem }) => {
   const icon = item.sex === 'M' ? faPerson : faPersonDress;
-  const circleColor = item.status === 'active' ? 'white' : 'green';
-
+  const circleColor = item.status === 'active' ? 'green' : 'white';
+  const handleUserClick = () => {
+    if (item.status === 'active') {
+      // Lógica para manejar el clic en usuarios activos
+      console.log('Usuario clicado:', item.name);
+      // Aquí puedes navegar a otra página si es necesario
+      navigation.navigate('Questions');
+    } else {
+      // Lógica para manejar el clic en usuarios no activos (opcional)
+      console.log('No puedes hacer clic en usuarios no activos:', item.name);
+    }
+  };
   return (
-    <View style={appStyles.listItem}>
-      <View style={appStyles.icon_user}>
-        <FontAwesomeIcon icon={icon} size={40} color="#000000" />
+    <TouchableOpacity onPress={handleUserClick} disabled={item.status !== 'active'}>
+      <View style={appStyles.listItem}>
+        <View style={appStyles.icon_user}>
+          <FontAwesomeIcon icon={icon} size={40} color="#000000" />
+        </View>
+        <View style={appStyles.info_user}>
+          <Text style={appStyles.txt_info_user}>{item.name}</Text>
+          <Text style={appStyles.txt_info_user}>{item.id}</Text>
+          <Text style={appStyles.txt_info_user}>{item.phone}</Text>
+        </View>
+        <View style={[appStyles.style_circle, { backgroundColor: circleColor }]}></View>
       </View>
-      <View style={appStyles.info_user}>
-        <Text style={appStyles.txt_info_user}>{item.name}</Text>
-        <Text style={appStyles.txt_info_user}>{item.id}</Text>
-        <Text style={appStyles.txt_info_user}>{item.phone}</Text>
-      </View>
-      <View style={[appStyles.style_circle, { backgroundColor: circleColor }]}></View>
-    </View>
+    </TouchableOpacity>
   );
 };
 const handleSearch = () => {
