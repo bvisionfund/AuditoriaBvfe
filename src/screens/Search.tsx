@@ -106,13 +106,10 @@ const renderItem = ({ item }: { item: ListItem }) => {
   const circleColor = item.status === 'active' ? 'green' : 'white';
   const handleUserClick = () => {
     if (item.status === 'active') {
-      // Lógica para manejar el clic en usuarios activos
-      console.log('Usuario clicado:', item.name);
-      // Aquí puedes navegar a otra página si es necesario
+      //console.log('Usuario clicado:', item.name);
       navigation.navigate('Questions');
     } else {
-      // Lógica para manejar el clic en usuarios no activos (opcional)
-      console.log('No puedes hacer clic en usuarios no activos:', item.name);
+      //console.log('No puedes hacer clic en usuarios no activos:', item.name);
     }
   };
   return (

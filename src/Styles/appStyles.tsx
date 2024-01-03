@@ -1,11 +1,12 @@
 import { Center } from 'native-base';
-import { both } from 'rambdax';
+import { F, both } from 'rambdax';
 import { StyleSheet } from 'react-native';
 //Variables to define the background and text color
 export const Colors = {
   background: '#FF5900',  
   text: '#333333',
-  second_background: '#F6D8B2'       
+  second_background: '#F6D8B2',
+  background_questions: '#F6EEE4'      
 };
 // Type of word
 export const Fonts = {
@@ -38,7 +39,7 @@ const appStyles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'flex-start',
-    marginTop: 40,
+    marginTop: 0,
     marginBottom: 0,
     padding: 30,
   },
@@ -418,7 +419,87 @@ txt_info_user:{
   fontWeight: 'bold',
   fontSize: 15,
   marginBottom:4
-}
+},
+//***************Questions Screens******* */
+container_information:{
+  left: 0,
+  top: 0,
+  width: 415,
+  height: 230,
+  alignSelf: 'center',
+  //backgroundColor: '#FF5900'
+},
+container_info:{
+  left: 0,
+  top: 0,
+  width: 410,
+  height: 150,
+  alignSelf: 'center',
+  backgroundColor: '#FF5900',
+  borderBottomRightRadius:25,
+  borderBottomLeftRadius:25
+},
+txt_title_personal_info:{
+  marginTop:20,
+  marginBottom:10,
+  marginLeft:10,
+  alignSelf: 'flex-start',
+  fontFamily: Fonts.fontFamily,
+  fontWeight: 'bold',
+  fontSize: 20,
+  color: '#FFFFFF'
+},
+container_location:{
+  marginTop:10,
+  flexDirection: 'row',
+  justifyContent: 'flex-end',
+  marginRight:15
+},
+txt_location:{
+  marginTop:5,
+  fontFamily: Fonts.fontFamily,
+  fontWeight: 'bold',
+  fontSize: 15
+},
+circle_image:{
+  marginTop:10,
+  width: 100,
+  height: 100,
+  borderRadius: 50,
+  alignSelf: 'center',
+  backgroundColor: '#ffffff' 
+},
+input_answer: {
+  alignSelf:'center',
+  width: 380,
+  height: 50,
+  borderRadius:15,
+  backgroundColor:'#F6D8B2',
+  borderColor: '#CCCCCC',
+  borderWidth: 1,
+  marginBottom:15,
+  paddingLeft: 15,
+},
+text_question:{
+  fontFamily: Fonts.fontFamily,
+  fontSize:15,
+  marginBottom:5
+},
+title_line: {
+  borderBottomWidth: 1, 
+  borderTopWidth: 1,    
+  borderColor: '#FFFFFF', 
+  marginBottom: 30,    
+  marginTop: 30,
+},
+txt_title_encuesta:{
+  marginLeft:10,
+  alignSelf: 'flex-start',
+  fontFamily: Fonts.fontFamily,
+  fontWeight: 'bold',
+  fontSize: 20,
+  color: '#FFFFFF'
+},
 });
 
 export default appStyles;
