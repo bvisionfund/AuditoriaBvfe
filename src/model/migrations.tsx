@@ -16,15 +16,32 @@ import { addColumns } from '@nozbe/watermelondb/Schema/migrations';
 export default schemaMigrations({
   migrations: [
     {
-      toVersion: 2,
+      toVersion: 4,
       steps: [
-        // Define steps for migration to version 2
-        addColumns({
-          table: 'persons',
+        // Agrega la nueva tabla
+        addTable({
+          name: 'INFORACIONPERSONAL',
           columns: [
-            { name: 'Cellphone', type: 'string' },
-        ],
-          
+            { name: 'SECUENCIAL', type: 'number' },
+            { name: 'NOMBRES', type: 'string' },
+            { name: 'APELLIDOS', type: 'string' },
+            { name: 'IDENTIFICACION', type: 'string' },
+            { name: 'AGENCIA', type: 'string' },
+            { name: 'GRUPO', type: 'string' },
+            { name: 'NEXPEDIENTE', type: 'string' },
+            { name: 'NCREDITO', type: 'string' },
+            { name: 'FECHADESEMBOLSO', type: 'string' },
+            { name: 'FECHAVENCIMINETO', type: 'string' },
+            { name: 'MONTO', type: 'number' },
+            { name: 'ESTADOCIVIL', type: 'string' },
+            { name: 'NOMBRECONYUGE', type: 'string' },
+            { name: 'MENORES18', type: 'number' },
+            { name: 'HIJOSPATROCINADOS', type: 'number' },
+            { name: 'DIRECCION', type: 'string' },
+            { name: 'TELEFONO', type: 'string' },
+            { name: 'GENERO', type: 'string' },
+            { name: 'ESATADO', type: 'string' },
+          ],
         }),
       ],
     },
@@ -39,3 +56,7 @@ export default schemaMigrations({
     },
   ],
 });
+function addTable(arg0: { name: string; columns: { name: string; type: string; }[]; }): import("@nozbe/watermelondb/Schema/migrations").MigrationStep {
+  throw new Error('Function not implemented.');
+}
+

@@ -15,6 +15,23 @@ export const Fonts = {
 
 // Colors to create Linear Gradient
 export const Gradient_Colors = ['#FF5900', '#EEAA86'];
+export const textStyles = StyleSheet.create({
+  optionText: {
+    fontSize: 16,
+    color: 'green',
+  },
+});
+export const pickerStyles = StyleSheet.create({
+  inputIOS: {
+    color: '#FF5900',
+  },
+  inputAndroid: {
+    color: '#FF5900',
+  },
+  placeholder: {
+    color: '#FF5900',
+  },
+});
 
 
 const appStyles = StyleSheet.create({
@@ -500,6 +517,20 @@ txt_title_encuesta:{
   fontSize: 20,
   color: '#FFFFFF'
 },
+optionsContainer:{
+  height:65,
+  width:350,
+  borderColor: '#CCCCCC',
+  borderWidth: 1,
+  borderRadius:15,
+  backgroundColor:Colors.second_background,
+  alignSelf: 'flex-start',
+  //paddingLeft:0
+},
+txt_options:{
+  fontFamily:Fonts.fontFamily,
+  fontSize: 20
+}
 });
 
 export default appStyles;

@@ -5,10 +5,11 @@ import {mySchema} from '../src/model/Auditoria_DB_Schema';
 import User_RC_Model from '../src/model/User_RC_Model';
 import User_SAD_Model from '../src/model/User_SAD_Model';
 import User_PPI_Model from '../src/model/User_PPI_Model';
+import migrations from './model/migrations';
 // ****************************** Data Base******************
 const adapter = new SQLiteAdapter({
   schema: mySchema,
-
+  //migrations,
   onSetUpError(error) {
     // Database failed to load -- offer the user to reload the app or log out
     console.log('db error', error);
@@ -70,6 +71,14 @@ export const onCreate_User_SAD = async ( id: string, name: string, last_name:str
 };
   
   //Read registers from User_RC
+  /* export const onRead_personal_information = async () => {
+    const allPosts = await database.get('INFORACIONPERSONAL').query().fetch();
+    //console.log(allPosts);
+    allPosts.map((post: InstanceType<typeof User_RC_Model>) => {
+      console.log(post.Nombre);
+    });
+  }; */
+  //Read registers from User_RC
   export const onRead = async () => {
     const allPosts = await database.get('User_R_C').query().fetch();
     //console.log(allPosts);
@@ -93,6 +102,11 @@ export const onCreate_User_SAD = async ( id: string, name: string, last_name:str
       console.log(post.Nombre);
     });
   };
+
+
+
+
+
   // Función para eliminar todos los registros
   export const deleteAllRecords = async () => {
     await database.write(async () => {
