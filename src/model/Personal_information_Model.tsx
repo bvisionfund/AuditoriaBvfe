@@ -5,7 +5,7 @@ import {field, text, readonly} from '@nozbe/watermelondb/decorators';
 export default class Personal_Information_Model extends Model {
   static table = 'INFORACIONPERSONAL';
 
-  @field('SECUENCIAL') SECUENCIAL?: string;
+  @field('SECUENCIAL') SECUENCIAL?: number;
   @field('NOMBRES') NOMBRES?: string;
   @field('APELLIDOS') APELLIDOS?: string;
   @field('IDENTIFICACION') IDENTIFICACION?: string;
@@ -23,7 +23,7 @@ export default class Personal_Information_Model extends Model {
   @field('DIRECCION') DIRECCION?: string;
   @field('TELEFONO') TELEFONO?: string;
   @field('GENERO') GENERO?: string;
-  @field('ESATADO') ESATADO?: string;
+  @field('ESTADO') ESTADO?: string;
 
 
 }

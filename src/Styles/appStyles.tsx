@@ -397,7 +397,7 @@ users_container:{
 },
 listItem:{
   width: 325,
-  height: 90,
+  height: 100,
   backgroundColor: Colors.second_background,
   borderRadius: 10,
   marginBottom: 10,
@@ -434,7 +434,7 @@ txt_info_user:{
   color: '#000000',
   fontFamily: Fonts.fontFamily,
   fontWeight: 'bold',
-  fontSize: 15,
+  fontSize: 14,
   marginBottom:4
 },
 //***************Questions Screens******* */

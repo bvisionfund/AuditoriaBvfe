@@ -1,20 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type {PropsWithChildren} from 'react';
 import {Modal,SafeAreaView,Text,View,TouchableOpacity,Image,TextInput, ScrollView } from 'react-native';
 import appStyles, { Colors } from '../Styles/appStyles';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faHome, faUpload, faMagnifyingGlass, faPerson,faPersonDress,faLocationDot } from '@fortawesome/free-solid-svg-icons';
+import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/homeStack';
 import RNPickerSelect from 'react-native-picker-select';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Information_User_Questions } from '../Auditoria_DB';
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Search'>;
 interface LoginProps {
   navigation: LoginScreenNavigationProp;
 }
-const Questions:  React.FC<LoginProps> = ({ navigation }) => {
-    const [modalVisible, setModalVisible] = useState<boolean>(false);
+export const handleUserClickExternal = (identificacion_user: string) => {
+    console.log('Número de cédula desde Search:', identificacion_user);
+  };
+  //const Questions: React.FC<LoginProps & { identificacion_user: string }> = ({ navigation, identificacion_user }) => {
+    const Questions:  React.FC<LoginProps> = ({ navigation }) => {
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
     const [showInfoButton, setShowInfoButton] = useState(false);
     const showSaveButton = !modalVisible && !showInfoButton;
     const showViewButton = !modalVisible && showInfoButton;
@@ -38,6 +43,54 @@ const Questions:  React.FC<LoginProps> = ({ navigation }) => {
     const [hijos_patrocinados, sethijos_patrocinados] = useState('');
     const [direccion, setdireccion] = useState('');
     const [telefono, settelefono] = useState('');
+    
+    /* **************Extraer info de la base de datos*************** */
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const information_questions = await Information_User_Questions('1003818497');
+            console.log('Informacion Preguntas:', information_questions);
+            if (information_questions.length > 0) {
+              const {
+                AGENCIA,
+                DIRECCION,
+                ESTADOCIVIL,
+                FECHADESEMBOLSO,
+                FECHAVENCIMINETO,
+                GRUPO,
+                HIJOSPATROCINADOS,
+                IDENTIFICACION,
+                MENORES18,
+                MONTO,
+                NCREDITO,
+                NEXPEDIENTE,
+                NOMBRECONYUGE,
+                NOMBRES,
+                TELEFONO,
+              } = information_questions[0];
+              // Asigna los valores a los estados locales
+              setagencia(AGENCIA || '');
+              setgrupo(GRUPO || '');
+              setexpediente(NEXPEDIENTE || '');
+              setcredito(NCREDITO || '');
+              setfecha_desembolso(FECHADESEMBOLSO || '');
+              setfecha_vencimiento(FECHAVENCIMINETO || '');
+              setclientes(NOMBRES || '' ); 
+              setmonto(String(MONTO || '')); 
+              setidentificacion(IDENTIFICACION || '');
+              setestado_civil(ESTADOCIVIL || '');
+              setnombre_conyuge(NOMBRECONYUGE || '');
+              setmenores_18(String(MENORES18 || '')); 
+              sethijos_patrocinados(String(HIJOSPATROCINADOS || '')); 
+              setdireccion(DIRECCION || '');
+              settelefono(TELEFONO || '');
+            }
+          } catch (error) {
+            console.error('Error al obtener campos de la base de datos:', error);
+          }
+        };
+        fetchData();
+      }, []);
 
     /****************** States to questions****************************/  
     const [selectedOptionQ1, setSelectedOptionQ1] = useState<string | null>(null); 
@@ -178,6 +231,7 @@ const Questions:  React.FC<LoginProps> = ({ navigation }) => {
             setSelectedOptionQ21('');setObservationQ21('');setSelectedOptionQ22('');setObservationQ22('');
             setSelectedOptionQ23('');setObservationQ23('')
           };
+    
     return (
     <SafeAreaView style={{ ...appStyles.container_Gradient, backgroundColor: Colors.background_questions }}>
         <ScrollView>
@@ -249,7 +303,7 @@ const Questions:  React.FC<LoginProps> = ({ navigation }) => {
                     value={fecha_vencimiento}
                     onChangeText={(text) => setfecha_vencimiento(text)}
                 />
-                <Text style={appStyles.text_question}>Clientes</Text>
+                <Text style={appStyles.text_question}>Cliente</Text>
                 <TextInput
                     style={appStyles.input_answer}
                     value={clientes}
