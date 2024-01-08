@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import type {PropsWithChildren} from 'react';
-import {Modal,SafeAreaView,Text,View,TouchableOpacity,Image,TextInput, ScrollView } from 'react-native';
+import {Modal,SafeAreaView,Text,View,TouchableOpacity,Image,TextInput, ScrollView, Platform } from 'react-native';
 import appStyles, { Colors } from '../Styles/appStyles';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
@@ -9,6 +9,7 @@ import { RootStackParamList } from '../../navigation/homeStack';
 import RNPickerSelect from 'react-native-picker-select';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Information_User_Questions } from '../Auditoria_DB';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Search'>;
 interface LoginProps {
@@ -18,7 +19,7 @@ export const handleUserClickExternal = (identificacion_user: string) => {
     console.log('Número de cédula desde Search:', identificacion_user);
   };
   //const Questions: React.FC<LoginProps & { identificacion_user: string }> = ({ navigation, identificacion_user }) => {
-    const Questions:  React.FC<LoginProps> = ({ navigation }) => {
+const Questions:  React.FC<LoginProps> = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
     const [showInfoButton, setShowInfoButton] = useState(false);
     const showSaveButton = !modalVisible && !showInfoButton;
@@ -27,8 +28,10 @@ export const handleUserClickExternal = (identificacion_user: string) => {
     /* **************** States to input text **************** */
     const [agencia, setagencia] = useState('');
     const [asesor, setasesor] = useState('');
-    const [fecha, setfecha] = useState('');
+    const [fecha, setfecha] = useState<Date | null>(null);
+    const [cliente_contactado, setcliente_contactado] = useState('');
     const [revisado, setrevisado] = useState('');
+    const [entrevista_a, setentrevista_a] = useState('')
     const [grupo, setgrupo] = useState('');
     const [expediente, setexpediente] = useState('');
     const [credito, setcredito] = useState('');
@@ -43,6 +46,7 @@ export const handleUserClickExternal = (identificacion_user: string) => {
     const [hijos_patrocinados, sethijos_patrocinados] = useState('');
     const [direccion, setdireccion] = useState('');
     const [telefono, settelefono] = useState('');
+    
     
     /* **************Extraer info de la base de datos*************** */
     useEffect(() => {
@@ -146,7 +150,28 @@ export const handleUserClickExternal = (identificacion_user: string) => {
         { label: 'No', value: 'No' },
         { label: 'N/A', value: 'N/A' },
       ];
-
+      // ********************* Options to multiple choice to Agencias*************
+    const agencias = [
+        { label: 'Seleccionar', value: '' },
+        { label: 'Quito', value: 'Quito' },
+        { label: 'Ibarra', value: 'Ibarra' },
+        { label: 'Tulcan', value: 'Tulcan' },
+      ];
+     // ********************* Options to multiple choice Cliente contactado*************
+     const c_contactado = [
+        { label: 'Seleccionar', value: '' },
+        { label: 'Si', value: 'Si' },
+        { label: 'No', value: 'No' },
+        { label: 'Inubicable', value: 'Inubicable' },
+      ];
+      // ********************* Options to multiple choice Entrevista realizada a*************
+     const entrevista_a_options = [
+        { label: 'Seleccionar', value: '' },
+        { label: 'Cliente (CARA-CARA)', value: 'Cliente' },
+        { label: 'Familiar', value: 'Familiar' },
+        { label: 'Lamada Telefonica', value: 'Lamada Telefonica' },
+      ];
+      
     //Save information in JSON
     const saveInformation = async () => {
         const data = {
@@ -154,7 +179,9 @@ export const handleUserClickExternal = (identificacion_user: string) => {
                 agencia,
                 asesor,
                 fecha,
+                cliente_contactado,
                 revisado,
+                entrevista_a,
                 grupo,
                 expediente,
                 credito,
@@ -214,7 +241,7 @@ export const handleUserClickExternal = (identificacion_user: string) => {
             console.log(jsonData);
           }
           const resetFields = () => {
-            setagencia('');setasesor('');setfecha('');setrevisado('');setgrupo('');
+            setagencia('');setasesor('');/* setfecha(''); */setcliente_contactado('');setrevisado('');setgrupo('');
             setexpediente('');setcredito('');setfecha_desembolso('');setfecha_vencimiento('');
             setclientes('');setmonto('');setidentificacion('');setestado_civil('');setnombre_conyuge('');
             setmenores_18('');sethijos_patrocinados('');setdireccion('');settelefono('');
@@ -231,7 +258,26 @@ export const handleUserClickExternal = (identificacion_user: string) => {
             setSelectedOptionQ21('');setObservationQ21('');setSelectedOptionQ22('');setObservationQ22('');
             setSelectedOptionQ23('');setObservationQ23('')
           };
-    
+          ///****************** Fecha ************/
+          const [fecha_2, setFecha_2] = useState(new Date());
+          const [showDatePicker, setShowDatePicker] = useState(false);
+          const handleDateChange = (event: any, selectedDate: any) => {
+            setShowDatePicker(Platform.OS === 'ios'); // Close the picker on iOS immediately
+            if (selectedDate) {
+              setfecha(selectedDate);
+            }
+          };
+          const showDatepicker = () => {
+            setShowDatePicker(true);
+          };
+          const formatDateToString = (date: Date | null): string => {
+            return date ? date.toISOString().split('T')[0] : '';
+          };
+          const handleTextInputChange = (text: string) => {
+            // Intenta convertir la cadena a una fecha y establecerla en el estado
+            const parsedDate = text ? new Date(text) : null;
+            setfecha(parsedDate);
+          };
     return (
     <SafeAreaView style={{ ...appStyles.container_Gradient, backgroundColor: Colors.background_questions }}>
         <ScrollView>
@@ -248,29 +294,64 @@ export const handleUserClickExternal = (identificacion_user: string) => {
             </View>
             <View style={appStyles.content}>
                 <Text style={appStyles.text_question}>Agencia</Text>
-                <TextInput
-                    style={appStyles.input_answer}
+                <View style={appStyles.optionsContainer}>
+                    <RNPickerSelect
+                    placeholder={{}}
+                    items={agencias}
+                    onValueChange={(value) => setagencia(value)}
                     value={agencia}
-                    onChangeText={(text) => setagencia(text)}
-                />
+                    />
+                </View>
                 <Text style={appStyles.text_question}>Asesor</Text>
                 <TextInput
                     style={appStyles.input_answer}
                     value={asesor}
                     onChangeText={(text) => setasesor(text)}
+                    
                 />
-                <Text style={appStyles.text_question}>Fecha</Text>
-                <TextInput
+                <TouchableOpacity onPress={showDatepicker}>
+                    <Text style={appStyles.text_question}>Seleccionar Fecha</Text>
+                </TouchableOpacity>
+                {showDatePicker && (
+                    <DateTimePicker
                     style={appStyles.input_answer}
-                    value={fecha}
-                    onChangeText={(text) => setfecha(text)}
+                    testID="dateTimePicker"
+                    value={fecha_2}
+                    mode="date"
+                    display="default"
+                    onChange={handleDateChange}
+                    />
+                )}
+                <TextInput
+                    style={[appStyles.input_answer, { color: 'black' }]}
+                    value={formatDateToString(fecha)}
+                    onChangeText={handleTextInputChange}
+                    editable={false}
                 />
+                <Text style={appStyles.text_question}> Cliente contactado</Text>
+                <View style={appStyles.optionsContainer}>
+                    <RNPickerSelect
+                    placeholder={{}}
+                    items={c_contactado}
+                    onValueChange={(value) => setcliente_contactado(value)}
+                    value={cliente_contactado}
+                    />
+                </View>
                 <Text style={appStyles.text_question}>Revisado por</Text>
                 <TextInput
                     style={appStyles.input_answer}
                     value={revisado}
                     onChangeText={(text) => setrevisado(text)}
                 />
+                <Text style={appStyles.text_question}>Entrevista realizada a</Text>
+                <View style={appStyles.optionsContainer}>
+                    <RNPickerSelect
+                    placeholder={{}}
+                    items={entrevista_a_options}
+                    onValueChange={(value) => setentrevista_a(value)}
+                    value={entrevista_a}
+                    />
+                </View>
                 <Text style={appStyles.text_question}>Nombre del Grupo/ Banca</Text>
                 <TextInput
                     style={appStyles.input_answer}
@@ -322,6 +403,7 @@ export const handleUserClickExternal = (identificacion_user: string) => {
                     value={identificacion}
                     onChangeText={(text) => setidentificacion(text)}
                     keyboardType="phone-pad"
+                    maxLength={10}
                 />
                 <Text style={appStyles.text_question}>Estado Civil</Text>
                 <TextInput
@@ -360,7 +442,8 @@ export const handleUserClickExternal = (identificacion_user: string) => {
                     style={appStyles.input_answer}
                     value={telefono}
                     onChangeText={(text) => settelefono(text)}
-                    keyboardType="phone-pad"                
+                    keyboardType="phone-pad"
+                    maxLength={10}                
                 />
                 {/* ************** Container of personal information ************************* */}
                 <View style={appStyles.container_information}>
