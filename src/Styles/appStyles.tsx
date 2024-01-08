@@ -530,6 +530,17 @@ optionsContainer:{
 txt_options:{
   fontFamily:Fonts.fontFamily,
   fontSize: 20
+},
+container_date:{
+
+  flexDirection: 'row',
+  width:200,
+  height:25,
+  //padding:10,
+  marginBottom:10,
+  justifyContent: 'space-between',
+  alignSelf: 'flex-start',
+  //backgroundColor: '#FF5900'
 }
 });
 

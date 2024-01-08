@@ -3,24 +3,34 @@ import type {PropsWithChildren} from 'react';
 import {Modal,SafeAreaView,Text,View,TouchableOpacity,Image,TextInput, ScrollView, Platform } from 'react-native';
 import appStyles, { Colors } from '../Styles/appStyles';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
+import { faLocationDot, faCalendarDays } from '@fortawesome/free-solid-svg-icons';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/homeStack';
 import RNPickerSelect from 'react-native-picker-select';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Information_User_Questions } from '../Auditoria_DB';
 import DateTimePicker from '@react-native-community/datetimepicker';
+//import RadioButton from '../components/RadioButton';
 
-type LoginScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Search'>;
+type LoginScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Questions'>;
 interface LoginProps {
   navigation: LoginScreenNavigationProp;
 }
 export const handleUserClickExternal = (identificacion_user: string) => {
     console.log('Número de cédula desde Search:', identificacion_user);
   };
+
+  interface QuestionsProps {
+    navigation: LoginScreenNavigationProp;
+    route: { params: { identificacion_user?: string } };
+  }
   //const Questions: React.FC<LoginProps & { identificacion_user: string }> = ({ navigation, identificacion_user }) => {
-const Questions:  React.FC<LoginProps> = ({ navigation }) => {
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
+//const Questions:  React.FC<LoginProps> = ({ navigation }) => {
+  //const Questions: React.FC<QuestionsProps> = ({ route }) => {
+  //const { identificacion_user } = route.params;
+  const Questions: React.FC<QuestionsProps> = ({ navigation, route }) => {
+    const identificacionUser: string | undefined = route.params?.identificacion_user;
+    const [modalVisible, setModalVisible] = useState<boolean>(false);
     const [showInfoButton, setShowInfoButton] = useState(false);
     const showSaveButton = !modalVisible && !showInfoButton;
     const showViewButton = !modalVisible && showInfoButton;
@@ -52,46 +62,53 @@ const Questions:  React.FC<LoginProps> = ({ navigation }) => {
     useEffect(() => {
         const fetchData = async () => {
           try {
-            const information_questions = await Information_User_Questions('1003818497');
-            console.log('Informacion Preguntas:', information_questions);
-            if (information_questions.length > 0) {
-              const {
-                AGENCIA,
-                DIRECCION,
-                ESTADOCIVIL,
-                FECHADESEMBOLSO,
-                FECHAVENCIMINETO,
-                GRUPO,
-                HIJOSPATROCINADOS,
-                IDENTIFICACION,
-                MENORES18,
-                MONTO,
-                NCREDITO,
-                NEXPEDIENTE,
-                NOMBRECONYUGE,
-                NOMBRES,
-                TELEFONO,
-              } = information_questions[0];
-              // Asigna los valores a los estados locales
-              setagencia(AGENCIA || '');
-              setgrupo(GRUPO || '');
-              setexpediente(NEXPEDIENTE || '');
-              setcredito(NCREDITO || '');
-              setfecha_desembolso(FECHADESEMBOLSO || '');
-              setfecha_vencimiento(FECHAVENCIMINETO || '');
-              setclientes(NOMBRES || '' ); 
-              setmonto(String(MONTO || '')); 
-              setidentificacion(IDENTIFICACION || '');
-              setestado_civil(ESTADOCIVIL || '');
-              setnombre_conyuge(NOMBRECONYUGE || '');
-              setmenores_18(String(MENORES18 || '')); 
-              sethijos_patrocinados(String(HIJOSPATROCINADOS || '')); 
-              setdireccion(DIRECCION || '');
-              settelefono(TELEFONO || '');
+                if (identificacionUser !== undefined) {
+                    // Ahora TypeScript sabe que identificacionUser es de tipo string
+                    const information_questions = await Information_User_Questions(identificacionUser);
+                    console.log('Informacion Preguntas:', information_questions);
+                if (information_questions.length > 0) {
+                const {
+                    AGENCIA,
+                    DIRECCION,
+                    ESTADOCIVIL,
+                    FECHADESEMBOLSO,
+                    FECHAVENCIMINETO,
+                    GRUPO,
+                    HIJOSPATROCINADOS,
+                    IDENTIFICACION,
+                    MENORES18,
+                    MONTO,
+                    NCREDITO,
+                    NEXPEDIENTE,
+                    NOMBRECONYUGE,
+                    NOMBRES,
+                    TELEFONO,
+                } = information_questions[0];
+                // Asigna los valores a los estados locales
+                setagencia(AGENCIA || '');
+                setgrupo(GRUPO || '');
+                setexpediente(NEXPEDIENTE || '');
+                setcredito(NCREDITO || '');
+                setfecha_desembolso(FECHADESEMBOLSO || '');
+                setfecha_vencimiento(FECHAVENCIMINETO || '');
+                setclientes(NOMBRES || '' ); 
+                setmonto(String(MONTO || '')); 
+                setidentificacion(IDENTIFICACION || '');
+                setestado_civil(ESTADOCIVIL || '');
+                setnombre_conyuge(NOMBRECONYUGE || '');
+                setmenores_18(String(MENORES18 || '')); 
+                sethijos_patrocinados(String(HIJOSPATROCINADOS || '')); 
+                setdireccion(DIRECCION || '');
+                settelefono(TELEFONO || '');
+                }
+                } else {
+                    // Manejar el caso en el que identificacionUser es undefined
+                    console.error("identificacionUser es undefined");
+                }
+                
+            } catch (error) {
+                console.error('Error al obtener campos de la base de datos:', error);
             }
-          } catch (error) {
-            console.error('Error al obtener campos de la base de datos:', error);
-          }
         };
         fetchData();
       }, []);
@@ -241,8 +258,8 @@ const Questions:  React.FC<LoginProps> = ({ navigation }) => {
             console.log(jsonData);
           }
           const resetFields = () => {
-            setagencia('');setasesor('');/* setfecha(''); */setcliente_contactado('');setrevisado('');setgrupo('');
-            setexpediente('');setcredito('');setfecha_desembolso('');setfecha_vencimiento('');
+            setagencia('');setasesor('');setfecha(new Date());setcliente_contactado('');setrevisado('');setgrupo('');
+            setentrevista_a('');setexpediente('');setcredito('');setfecha_desembolso('');setfecha_vencimiento('');
             setclientes('');setmonto('');setidentificacion('');setestado_civil('');setnombre_conyuge('');
             setmenores_18('');sethijos_patrocinados('');setdireccion('');settelefono('');
             setSelectedOptionQ1('');setObservationQ1('');setSelectedOptionQ2('');setObservationQ2('');
@@ -278,6 +295,12 @@ const Questions:  React.FC<LoginProps> = ({ navigation }) => {
             const parsedDate = text ? new Date(text) : null;
             setfecha(parsedDate);
           };
+          //********* Proof radius  */
+          const data = [
+            { value: 'Apple' },
+            { value: 'Samsung' },
+            { value: 'Blackberry' },
+          ];
     return (
     <SafeAreaView style={{ ...appStyles.container_Gradient, backgroundColor: Colors.background_questions }}>
         <ScrollView>
@@ -292,6 +315,10 @@ const Questions:  React.FC<LoginProps> = ({ navigation }) => {
                     <Image source={require('../images/User.png')} style={appStyles.circle_image}/>   
                 </View>
             </View>
+
+            {/* <Text>Choose your favorite company: </Text>
+            <RadioButton data={data} onSelect={undefined} /> */}
+
             <View style={appStyles.content}>
                 <Text style={appStyles.text_question}>Agencia</Text>
                 <View style={appStyles.optionsContainer}>
@@ -309,12 +336,12 @@ const Questions:  React.FC<LoginProps> = ({ navigation }) => {
                     onChangeText={(text) => setasesor(text)}
                     
                 />
-                <TouchableOpacity onPress={showDatepicker}>
+                <TouchableOpacity onPress={showDatepicker} style={appStyles.container_date}>
                     <Text style={appStyles.text_question}>Seleccionar Fecha</Text>
+                    <FontAwesomeIcon icon={faCalendarDays} size={22} color="#FF5900" />
                 </TouchableOpacity>
                 {showDatePicker && (
                     <DateTimePicker
-                    style={appStyles.input_answer}
                     testID="dateTimePicker"
                     value={fecha_2}
                     mode="date"

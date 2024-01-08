@@ -53,8 +53,9 @@ const renderItem = ({ item }: { item: ListItem }) => {
     if (item.ESTADO === 'Activo') {
       //console.log('Usuario clicado:', item.name);
       handleUserClickExternal(item.IDENTIFICACION);
-      navigation.navigate('Questions');
-      //navigation.navigate('Questions', { identificacion_user: item.IDENTIFICACION });
+      //navigation.navigate('Questions');
+      //navigation.navigate('Questions', { identificacion_user: item.IDENTIFICACION } as { identificacion_user: string });
+      navigation.navigate('Questions', { identificacion_user: item.IDENTIFICACION });
     } else {
       //console.log('No puedes hacer clic en usuarios no activos:', item.name);
     }

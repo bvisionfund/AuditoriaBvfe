@@ -13,8 +13,9 @@ export type RootStackParamList = {
   Home: undefined;
   Load_Excel: undefined;
   Excel_proof: undefined;
-  Search:undefined;
-  Questions:undefined;
+  Search: undefined;
+  //Questions: undefined;
+  Questions: { identificacion_user?: string }; // Identificacion_user ahora es opcional
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
